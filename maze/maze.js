@@ -123,14 +123,19 @@ const castRay = (rayAngle) => {
     return { distanceToWall, boundary, wallType };
 };
 
-const checkCollectibles = () => {
-    collectibles.forEach(({ collected, x, y }) => {
-        if (!collected && Math.sqrt((playerX - x) ** 2 + (playerY - y) ** 2) < 0.5) {
-            score += 100;
-            collected = true;
+function checkCollectibles() {
+    collectibles.forEach(collectible => {
+        if (!collectible.collected) {
+            const dx = playerX - collectible.x;
+            const dy = playerY - collectible.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < 0.5) {
+                collectible.collected = true;
+                score += 100;
+            }
         }
     });
-};
+}
 
 function render() {
     const screen = [];
